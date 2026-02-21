@@ -19,15 +19,12 @@
 
 ## 💻 Sistemas Operacionais Suportados
 
-Nosso instalador foi reescrito do zero para detectar e adaptar-se a diversas distribuições Linux. Testado e homologado para os seguintes sistemas:
+Nosso instalador foi construído do zero para rodar liso nas principais distribuições usadas em servidores de hospedagem. Testado e homologado para:
 
 | Distribuição | Versões Suportadas | Status | Observações |
 | :--- | :---: | :---: | :--- |
 | **Ubuntu** | `22.04 LTS` até `24.04 LTS` | 🟢 Excelente | Otimização de Mirrors BR aplicada automaticamente. |
-| **Debian** | `11 (Bullseye)`, `12 (Bookworm)` | 🟢 Excelente | Repositórios otimizados para `ftp.br.debian.org`. |
-| **Rocky Linux** | `8.x`, `9.x` | 🔵 Estável | Repositórios EPEL e Remi configurados nativamente. |
-| **AlmaLinux** | `8.x`, `9.x` | 🔵 Estável | Repositórios EPEL e Remi configurados nativamente. |
-| **RHEL** | `8.x`, `9.x` | 🔵 Estável | Compatibilidade total com a base RedHat. |
+| **Debian** | `11` até `13` | 🟢 Excelente | Repositórios otimizados e instalação prévia de dependências. |
 
 > [!WARNING]
 > **Atenção à Virtualização:** O Pterodactyl Wings utiliza **Docker**. Por isso, seu servidor VPS **deve** usar virtualização **KVM** ou ser um servidor Dedicado. Virtualizações antigas como OpenVZ ou LXC não são suportadas.
@@ -41,7 +38,7 @@ Acesse seu servidor via SSH com o usuário `root`. **Escolha o comando correspon
 > [!IMPORTANT]
 > **Certificados SSL (HTTPS):** Se você for instalar com SSL (Recomendado), os domínios do Painel e do Node **já devem estar apontados (DNS Tipo A)** para o IP do seu servidor antes de executar o script.
 
-### 🟠 Para Ubuntu (22.04 até 24.04)
-O Ubuntu geralmente já possui as ferramentas básicas necessárias. Basta rodar o comando abaixo:
+### 🟠 Para Ubuntu (22.04 até 24.04) & Debian (11 até o 13)
+O Ubuntu e o Debian geralmente já possuem as ferramentas básicas prontas. Basta rodar o comando abaixo:
 ```bash
 curl -sSL [https://raw.githubusercontent.com/DoutorLouness/astral-install/main/install.sh](https://raw.githubusercontent.com/DoutorLouness/astral-install/main/install.sh) | sudo bash
