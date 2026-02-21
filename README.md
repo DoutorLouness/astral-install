@@ -2,51 +2,51 @@
   <img src="https://gustavozs.ovh/assets/Astralvioleta.png" width="180" alt="Astral Cloud Logo">
 </p>
 
-<h1 align="center">🌌 Astral Cloud — Auto Installer</h1>
+<h1 align="center">🌌 Astral Cloud — Instalador Automático</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Version-2.1.0-6e54ff?style=for-the-badge">
-  <img src="https://img.shields.io/badge/Status-Stable-2ea44f?style=for-the-badge">
+  <img src="https://img.shields.io/badge/Versão-2.1.0-6e54ff?style=for-the-badge">
+  <img src="https://img.shields.io/badge/Status-Estável-2ea44f?style=for-the-badge">
   <img src="https://img.shields.io/badge/OS-Ubuntu%20%7C%20Debian-1f6feb?style=for-the-badge">
-  <img src="https://img.shields.io/badge/License-MIT-E9430F?style=for-the-badge">
+  <img src="https://img.shields.io/badge/Licença-MIT-E9430F?style=for-the-badge">
 </p>
 
 <p align="center">
-  <strong>Instale sua infraestrutura de hospedagem em minutos.</strong><br>
-  Script One-Click para <b>Pterodactyl Panel + Wings</b> com Docker, SSL e mirrors brasileiros.
+  <strong>Infraestrutura de hospedagem pronta em poucos minutos.</strong><br>
+  Script oficial para configuração do <b>Pterodactyl Panel & Wings</b> com Docker, SSL e otimizações de rede.
 </p>
 
 ---
 
-## 🚀 O que este script faz?
+## 🚀 Funcionalidades
 
-O **Astral Cloud Installer** elimina a necessidade de seguir tutoriais complexos. Com um único comando, ele prepara todo o ambiente:
+Chega de perder horas configurando dependências manualmente. O script cuida de todo o "trabalho sujo":
 
-* **Dependências:** Instala PHP, MySQL, Nginx e Docker.
-* **Segurança:** Configura Firewall (UFW) e isolamento de containers.
-* **Produção:** Otimiza mirrors (BR) para downloads ultra-rápidos.
-* **SSL:** Emite certificados Let's Encrypt automaticamente.
-* **Automação:** Configura inicialização automática (Systemd) para o Painel e Wings.
+* **Stack Completa:** Instalação automática de PHP, MySQL, Nginx e Docker.
+* **Performance BR:** Troca automática de mirrors para repositórios brasileiros (downloads muito mais rápidos).
+* **Segurança:** Configuração de Firewall (UFW) e permissões de diretórios.
+* **Certificado SSL:** Integração nativa com Let's Encrypt para HTTPS automático.
+* **Resiliência:** Configuração de serviços via `systemd` para auto-inicialização no boot.
 
 ---
 
-## 💻 Compatibilidade
+## 🐧 Compatibilidade
 
-Focado nas distribuições Linux mais estáveis para servidores KVM:
+Otimizado para as distribuições Linux mais sólidas do mercado:
 
-| Sistema | Versões Suportadas | Status |
+| Sistema | Versões Homologadas | Status |
 | :--- | :--- | :--- |
 | **Ubuntu** | `22.04 LTS` e `24.04 LTS` | 🟢 Recomendado |
 | **Debian** | `11`, `12` e `13 (Trixie)` | 🟢 Estável |
 
-> [!CAUTION]
-> **Virtualização:** O Wings exige suporte a Docker. Use **KVM** ou **Dedicado**. O script **não funciona** em OpenVZ ou LXC.
+> [!IMPORTANT]
+> **Atenção à Virtualização:** Para que o Wings funcione, sua VPS **precisa** ser **KVM** ou **Dedicado**. O Docker não é compatível com virtualizações compartilhadas como OpenVZ ou LXC.
 
 ---
 
-## ⚡ Instalação Rápida (One-Click)
+## ⚡ Instalação One-Click
 
-Acesse seu terminal como **root** e execute o comando abaixo:
+Conecte-se ao seu servidor via SSH como **root** e rode o comando:
 
 ```bash
-curl -sSL "[https://raw.githubusercontent.com/DoutorLouness/astral-install/main/install.sh](https://raw.githubusercontent.com/DoutorLouness/astral-install/main/install.sh)" | sudo bash
+curl -sSL "https://raw.githubusercontent.com/DoutorLouness/astral-install/refs/heads/main/install.sh?v=$RANDOM" | bash
