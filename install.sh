@@ -26,7 +26,6 @@ echo -e "${CYAN}Precisamos de alguns dados para configurar tudo automaticamente:
 echo -e "${YELLOW}ATENÇÃO: Os domínios já devem estar apontados (DNS) para o IP desta máquina!${NC}"
 echo ""
 
-# CORREÇÃO: Adicionado < /dev/tty para forçar a leitura do teclado mesmo usando curl | bash
 read -p "Qual o domínio do PAINEL? (ex: painel.dominio.com.br): " FQDN < /dev/tty
 read -p "Deseja instalar SSL (HTTPS) no PAINEL? [y/n]: " USE_SSL < /dev/tty
 
@@ -64,11 +63,9 @@ if [[ "$OS" == "ubuntu" || "$OS" == "debian" ]]; then
     # === OTIMIZAÇÃO DE REPOSITÓRIOS PARA O BRASIL ===
     echo -e "${CYAN}[INFO] Alterando repositórios para mirrors do Brasil para acelerar downloads...${NC}"
     if [ "$OS" == "ubuntu" ]; then
-        # Para Ubuntu 22.04 e anteriores
         if [ -f /etc/apt/sources.list ]; then
             sed -i -E 's/http:\/\/([a-z]{2}\.)?archive\.ubuntu\.com/http:\/\/br.archive.ubuntu.com/g' /etc/apt/sources.list
         fi
-        # Para Ubuntu 24.04+ (Novo formato deb822)
         if [ -f /etc/apt/sources.list.d/ubuntu.sources ]; then
             sed -i -E 's/http:\/\/([a-z]{2}\.)?archive\.ubuntu\.com/http:\/\/br.archive.ubuntu.com/g' /etc/apt/sources.list.d/ubuntu.sources
         fi
@@ -80,7 +77,6 @@ if [[ "$OS" == "ubuntu" || "$OS" == "debian" ]]; then
             sed -i -E 's/deb\.debian\.org/ftp.br.debian.org/g' /etc/apt/sources.list.d/debian.sources
         fi
     fi
-    # ================================================
 
     apt update -y
     apt install -y software-properties-common curl apt-transport-https ca-certificates gnupg tar unzip git redis-server mariadb-server nginx certbot python3-certbot-nginx
@@ -131,18 +127,18 @@ curl -Lo panel.tar.gz https://github.com/pterodactyl/panel/releases/latest/downl
 tar -xzvf panel.tar.gz && chmod -R 755 storage/* bootstrap/cache/
 cp .env.example .env
 
-# Instalar dependências do PHP
+# Instalar dependências do PHP (Com no-interaction para não travar)
 export COMPOSER_ALLOW_SUPERUSER=1
-composer install --no-dev --optimize-autoloader
+composer install --no-dev --optimize-autoloader --no-interaction
 
-# Configurar o .env
-php artisan key:generate --force
-php artisan p:environment:setup --author="${ADMIN_EMAIL}" --url="${PROTOCOL}://${FQDN}" --timezone="America/Sao_Paulo" --cache="redis" --session="redis" --queue="redis" --redis-host="127.0.0.1" --redis-pass="null" --redis-port="6379"
-php artisan p:environment:database --host="127.0.0.1" --port="3306" --database="panel" --username="pterodactyl" --password="${PASSWORD}"
+# Configurar o .env (Blindado contra perguntas)
+php artisan key:generate --force --no-interaction
+php artisan p:environment:setup --author="${ADMIN_EMAIL}" --url="${PROTOCOL}://${FQDN}" --timezone="America/Sao_Paulo" --cache="redis" --session="redis" --queue="redis" --redis-host="127.0.0.1" --redis-pass="" --redis-port="6379" --telemetry=0 --no-interaction
+php artisan p:environment:database --host="127.0.0.1" --port="3306" --database="panel" --username="pterodactyl" --password="${PASSWORD}" --no-interaction
 
 # Migrar banco de dados e criar usuário admin
-php artisan migrate --seed --force
-php artisan p:user:make --email="${ADMIN_EMAIL}" --admin=1 --password="${PASSWORD}" --name-first="Admin" --name-last="Astral" --username="admin"
+php artisan migrate --seed --force --no-interaction
+php artisan p:user:make --email="${ADMIN_EMAIL}" --admin=1 --password="${PASSWORD}" --name-first="Admin" --name-last="Astral" --username="admin" --no-interaction
 
 chown -R $WEB_USER:$WEB_USER /var/www/pterodactyl/*
 
@@ -215,7 +211,6 @@ fi
 # --- 6. INSTALANDO O WINGS E SSL DO NODE ---
 echo -e "${YELLOW}[5/6] Instalando o Wings e SSL do Node...${NC}"
 
-# Aplicar SSL no Node (Certonly para não bugar o Nginx)
 if [[ "$NODE_USE_SSL" =~ ^[Yy]$ ]]; then
     echo -e "${CYAN}[INFO] Gerando certificado SSL para o Node (Wings)...${NC}"
     certbot certonly --nginx -d ${NODE_FQDN} --non-interactive --agree-tos -m ${ADMIN_EMAIL}
@@ -247,7 +242,6 @@ EOF
 
 systemctl daemon-reload && systemctl enable wings
 
-# Limpeza de cache para economizar espaço
 echo -e "${CYAN}[INFO] Limpando arquivos temporários...${NC}"
 apt-get autoremove -y > /dev/null 2>&1
 apt-get clean > /dev/null 2>&1
