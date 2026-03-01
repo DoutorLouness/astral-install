@@ -49,4 +49,4 @@ Otimizado para as distribuições Linux mais sólidas do mercado:
 Conecte-se ao seu servidor via SSH como **root** e rode o comando:
 
 ```bash
-curl -sSL "https://raw.githubusercontent.com/DoutorLouness/astral-install/refs/heads/main/install.sh?v=$RANDOM" | bash
+curl -sSL "https://raw.githubusercontent.com/DoutorLouness/instalacao-ptero/refs/heads/main/install.sh?v=$RANDOM" | bash
