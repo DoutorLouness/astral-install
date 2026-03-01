@@ -283,18 +283,18 @@ while true; do
     echo -e " [5] Atualizar Painel Pterodactyl (Seguro, não deleta DB!)"
     echo -e " [0] Sair"
     echo -e "${GREEN}======================================================${NC}"
-    read -p " Opção: " OPCAO
+    read -p " Opção: " OPCAO < /dev/tty
 
     case $OPCAO in
         1)
             echo -e "\n${CYAN}--- DADOS DO PAINEL ---${NC}"
-            read -p "Domínio do PAINEL (ex: painel.dominio.com.br): " FQDN
-            read -p "Instalar SSL no PAINEL? [y/n]: " USE_SSL
-            read -p "E-mail Admin: " ADMIN_EMAIL
-            read -s -p "Senha Admin e Banco: " PASSWORD; echo ""
+            read -p "Domínio do PAINEL (ex: painel.dominio.com.br): " FQDN < /dev/tty
+            read -p "Instalar SSL no PAINEL? [y/n]: " USE_SSL < /dev/tty
+            read -p "E-mail Admin: " ADMIN_EMAIL < /dev/tty
+            read -s -p "Senha Admin e Banco: " PASSWORD < /dev/tty; echo ""
             echo -e "\n${CYAN}--- DADOS DO NODE ---${NC}"
-            read -p "Domínio do NODE (ex: node.dominio.com.br): " NODE_FQDN
-            read -p "Instalar SSL no NODE? [y/n]: " NODE_USE_SSL
+            read -p "Domínio do NODE (ex: node.dominio.com.br): " NODE_FQDN < /dev/tty
+            read -p "Instalar SSL no NODE? [y/n]: " NODE_USE_SSL < /dev/tty
             
             [[ "$USE_SSL" =~ ^[Yy]$ ]] && PROTOCOL="https" || PROTOCOL="http"
             
@@ -308,10 +308,10 @@ while true; do
             ;;
         2)
             echo -e "\n${CYAN}--- DADOS DO PAINEL ---${NC}"
-            read -p "Domínio do PAINEL (ex: painel.dominio.com.br): " FQDN
-            read -p "Instalar SSL no PAINEL? [y/n]: " USE_SSL
-            read -p "E-mail Admin: " ADMIN_EMAIL
-            read -s -p "Senha Admin e Banco: " PASSWORD; echo ""
+            read -p "Domínio do PAINEL (ex: painel.dominio.com.br): " FQDN < /dev/tty
+            read -p "Instalar SSL no PAINEL? [y/n]: " USE_SSL < /dev/tty
+            read -p "E-mail Admin: " ADMIN_EMAIL < /dev/tty
+            read -s -p "Senha Admin e Banco: " PASSWORD < /dev/tty; echo ""
             
             [[ "$USE_SSL" =~ ^[Yy]$ ]] && PROTOCOL="https" || PROTOCOL="http"
             
@@ -324,9 +324,9 @@ while true; do
             ;;
         3)
             echo -e "\n${CYAN}--- DADOS DO NODE ---${NC}"
-            read -p "Domínio do NODE (ex: node.dominio.com.br): " NODE_FQDN
-            read -p "Instalar SSL no NODE? [y/n]: " NODE_USE_SSL
-            read -p "E-mail (para o SSL certbot): " ADMIN_EMAIL
+            read -p "Domínio do NODE (ex: node.dominio.com.br): " NODE_FQDN < /dev/tty
+            read -p "Instalar SSL no NODE? [y/n]: " NODE_USE_SSL < /dev/tty
+            read -p "E-mail (para o SSL certbot): " ADMIN_EMAIL < /dev/tty
             
             setup_base_system
             install_wings
