@@ -33,8 +33,9 @@ main() {
     fi
 
     setup_base_system() {
-        echo -e "${YELLOW}>> Configurando Mirrors, Firewall, Swap e Pacotes Base...${NC}"
+        echo -e "${YELLOW}>> Configurando Firewall, Swap e Pacotes Base...${NC}"
         
+        # Swap
         if [ -z "$(swapon --show)" ]; then
             fallocate -l 2G /swapfile
             chmod 600 /swapfile
@@ -44,17 +45,13 @@ main() {
         fi
 
         if [[ "$OS" == "ubuntu" || "$OS" == "debian" ]]; then
-            if [ "$OS" == "ubuntu" ]; then
-                sed -i -E 's/http:\/\/([a-z]{2}\.)?archive\.ubuntu\.com/http:\/\/br.archive.ubuntu.com/g' /etc/apt/sources.list 2>/dev/null
-                sed -i -E 's/http:\/\/([a-z]{2}\.)?archive\.ubuntu\.com/http:\/\/br.archive.ubuntu.com/g' /etc/apt/sources.list.d/ubuntu.sources 2>/dev/null
-            elif [ "$OS" == "debian" ]; then
-                sed -i -E 's/deb\.debian\.org/ftp.br.debian.org/g' /etc/apt/sources.list 2>/dev/null
-                sed -i -E 's/deb\.debian\.org/ftp.br.debian.org/g' /etc/apt/sources.list.d/debian.sources 2>/dev/null
-            fi
-
-            apt update -y -qq
-            apt install -y -qq software-properties-common curl apt-transport-https ca-certificates gnupg tar unzip git redis-server mariadb-server nginx certbot python3-certbot-nginx ufw > /dev/null
+            # Atualiza a lista de pacotes com segurança
+            apt-get update -y -q
             
+            # Instala os pacotes base usando apt-get
+            apt-get install -y -q software-properties-common curl apt-transport-https ca-certificates gnupg tar unzip git redis-server mariadb-server nginx certbot python3-certbot-nginx ufw > /dev/null
+            
+            # Configura o Firewall
             ufw allow 22/tcp > /dev/null 2>&1
             ufw allow 80/tcp > /dev/null 2>&1
             ufw allow 443/tcp > /dev/null 2>&1
@@ -62,13 +59,15 @@ main() {
             ufw allow 2022/tcp > /dev/null 2>&1
             ufw --force enable > /dev/null 2>&1
 
+            # Configura repositório do PHP
             if [ "$OS" == "ubuntu" ]; then
                 LC_ALL=C.UTF-8 add-apt-repository -y ppa:ondrej/php > /dev/null 2>&1
             else
                 curl -sSL https://packages.sury.org/php/README.txt | bash -x > /dev/null 2>&1
             fi
-            apt update -y -qq
-            apt install -y -qq php8.3 php8.3-{common,cli,gd,mysql,mbstring,bcmath,xml,fpm,curl,zip} > /dev/null
+            
+            apt-get update -y -q
+            apt-get install -y -q php8.3 php8.3-{common,cli,gd,mysql,mbstring,bcmath,xml,fpm,curl,zip} > /dev/null
             
             PHP_SOCKET="unix:/run/php/php8.3-fpm.sock"
             NGINX_CONF_DIR="/etc/nginx/sites-available"
