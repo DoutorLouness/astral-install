@@ -78,11 +78,15 @@ if [[ "$OS" == "ubuntu" || "$OS" == "debian" ]]; then
     fi
 
     apt update -y -qq
-    apt install -y -qq software-properties-common curl apt-transport-https ca-certificates gnupg tar unzip git redis-server mariadb-server nginx certbot python3-certbot-nginx > /dev/null
+    # Removido o software-properties-common daqui
+    apt install -y -qq curl apt-transport-https ca-certificates gnupg tar unzip git redis-server mariadb-server nginx certbot python3-certbot-nginx > /dev/null
     
     if [ "$OS" == "ubuntu" ]; then
+        # Instalando software-properties-common APENAS no Ubuntu
+        apt install -y -qq software-properties-common > /dev/null
         LC_ALL=C.UTF-8 add-apt-repository -y ppa:ondrej/php > /dev/null 2>&1
     else
+        # Debian usa o script direto da Sury, então não precisa do software-properties-common
         curl -sSL https://packages.sury.org/php/README.txt | bash -x > /dev/null 2>&1
     fi
     apt update -y -qq
